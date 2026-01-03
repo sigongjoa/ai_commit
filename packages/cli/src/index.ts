@@ -4,6 +4,7 @@ import { Command } from 'commander';
 import { config } from 'dotenv';
 import { commitCommand } from './commands/commit';
 import { initCommand } from './commands/init';
+import { configCommand } from './commands/config';
 import packageJson from '../package.json';
 
 // Load environment variables
@@ -52,9 +53,15 @@ program
 program
   .command('config')
   .description('Show current configuration')
-  .action(async () => {
-    console.log('📋 Current configuration:');
-    console.log('Coming soon!');
+  .option('--json', 'Output as JSON')
+  .option('--validate', 'Validate configuration')
+  .action(async (options) => {
+    try {
+      await configCommand(options);
+    } catch (error) {
+      console.error('Error:', error instanceof Error ? error.message : error);
+      process.exit(1);
+    }
   });
 
 program.parse();

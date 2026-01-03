@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ai-commit.dev/schema.json",
+  "plugins": [
+    "@ai-commit/plugin-notion"
+  ],
+  "analysis": {
+    "enabled": true,
+    "rules": [
+      "technical-debt",
+      "security",
+      "test-coverage"
+    ],
+    "customRules": [],
+    "excludePatterns": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "*.min.js"
+    ]
+  },
+  "output": {
+    "dir": "docs/commits",
+    "format": "markdown"
+  },
+  "git": {
+    "autoPush": false,
+    "requireTests": false
+  },
+  "integrations": {
+    "@ai-commit/plugin-notion": {
+      "databaseId": "your_database_id_here"
+    }
+  }
+}
