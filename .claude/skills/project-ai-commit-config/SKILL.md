@@ -1,9 +1,14 @@
-# /ai-commit:config - Show Configuration
+---
+name: project-ai-commit-config
+description: Show AI-Commit configuration from all sources
+---
+
+# /ai-commit-config - Show Configuration
 
 > Display current AI-Commit configuration from all sources
 
 ## Triggers
-- User asks about configuration: "설정 보여줘", "config", "/ai-commit:config"
+- User asks about configuration: "설정 보여줘", "config", "/ai-commit-config"
 - User wants to check settings: "어떻게 설정돼있어?", "show settings"
 - User needs to verify integration: "Notion 연결됐어?", "is Notion configured?"
 
@@ -127,7 +132,7 @@ For scripting or debugging:
 
 ```
 User: "설정을 JSON으로 보여줘"
-User: "/ai-commit:config --json"
+User: "/ai-commit-config --json"
 
 Output:
 ```json
@@ -162,7 +167,7 @@ Check if configuration is valid:
 
 ```
 User: "설정 검증해줘"
-User: "/ai-commit:config --validate"
+User: "/ai-commit-config --validate"
 
 If valid:
 ✅ Configuration is valid
@@ -198,7 +203,7 @@ AI-Commit is using default values.
 
 💡 Create a configuration file:
    1. Copy .commitrc.json.example to .commitrc.json
-   2. Or run: /ai-commit:init to generate config
+   2. Or run: /ai-commit-init to generate config
 ```
 
 ### Plugin Not Configured

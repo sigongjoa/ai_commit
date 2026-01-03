@@ -1,9 +1,14 @@
-# /ai-commit:init - Initialize AI-Commit
+---
+name: project-ai-commit-init
+description: Initialize AI-Commit in project with configuration files
+---
+
+# /ai-commit-init - Initialize AI-Commit
 
 > Set up AI-Commit in a new or existing project with configuration files and LLM instructions
 
 ## Triggers
-- User wants to set up AI-Commit: "초기화해줘", "init", "/ai-commit:init"
+- User wants to set up AI-Commit: "초기화해줘", "init", "/ai-commit-init"
 - New project setup: "AI-Commit 설정해줘", "setup ai-commit"
 - User asks: "How do I configure AI-Commit?"
 
@@ -79,8 +84,8 @@ await initCommand({
 
 3. Test the Setup
    ```
-   /ai-commit:config    # Verify configuration
-   /ai-commit:analyze   # Test analysis
+   /ai-commit-config    # Verify configuration
+   /ai-commit-analyze   # Test analysis
    /ai-commit          # Make your first AI commit!
    ```
 
@@ -90,8 +95,8 @@ await initCommand({
 
 💡 Quick commands:
    • /ai-commit         - Commit with AI analysis
-   • /ai-commit:analyze - Analyze changes only
-   • /ai-commit:config  - Show configuration
+   • /ai-commit-analyze - Analyze changes only
+   • /ai-commit-config  - Show configuration
 ```
 
 ## Generated Files
@@ -169,9 +174,9 @@ This project uses AI-Commit for intelligent Git commit automation.
 
 ### Claude Code
 - `/ai-commit` - Full commit workflow
-- `/ai-commit:analyze` - Analyze changes only
-- `/ai-commit:config` - Show configuration
-- `/ai-commit:init` - Initialize/reconfigure
+- `/ai-commit-analyze` - Analyze changes only
+- `/ai-commit-config` - Show configuration
+- `/ai-commit-init` - Initialize/reconfigure
 
 ### Cursor, Windsurf, Cline (MCP)
 Use the ai_commit_* tools:
@@ -219,8 +224,8 @@ This project uses AI-Commit for automated Git commits with analysis.
 
 ### Usage
 - `/ai-commit` - Commit with AI analysis
-- `/ai-commit:analyze` - Analyze changes without committing
-- `/ai-commit:config` - View configuration
+- `/ai-commit-analyze` - Analyze changes without committing
+- `/ai-commit-config` - View configuration
 
 ### Configuration
 See `.commitrc.json` for settings.
@@ -239,7 +244,7 @@ When user asks to commit changes, use `/ai-commit` to automatically:
 Ask user about preferences:
 
 ```
-User: "/ai-commit:init"
+User: "/ai-commit-init"
 
 Response:
 🚀 Let's set up AI-Commit!
@@ -331,7 +336,7 @@ Warnings:
    • Add your NOTION_TOKEN and NOTION_DATABASE_ID
 
 Ready to use? Try:
-   /ai-commit:analyze
+   /ai-commit-analyze
 ```
 
 ## Update Existing Setup
@@ -352,7 +357,7 @@ Don't forget to set environment variables:
    NOTION_TOKEN=your_token
    NOTION_DATABASE_ID=your_db_id
 
-Updated! Test with: /ai-commit:config
+Updated! Test with: /ai-commit-config
 ```
 
 ## Error Handling
@@ -367,7 +372,7 @@ Initialize Git first:
    git init
    git remote add origin <url>
 
-Then run /ai-commit:init again.
+Then run /ai-commit-init again.
 ```
 
 ### Permission Issues
@@ -393,7 +398,7 @@ Fix:
 
 ### Example 1: First Time Setup
 ```
-User: "/ai-commit:init"
+User: "/ai-commit-init"
 → Create all files
 → Show next steps
 ```
@@ -407,7 +412,7 @@ User: "Linear 플러그인 추가해줘"
 
 ### Example 3: Reconfigure
 ```
-User: "/ai-commit:init --force"
+User: "/ai-commit-init --force"
 → Overwrite existing config
 → Regenerate all files
 ```

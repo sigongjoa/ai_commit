@@ -1,9 +1,14 @@
-# /ai-commit:analyze - Analyze Changes Only
+---
+name: project-ai-commit-analyze
+description: Analyze Git changes for technical debt and security risks
+---
+
+# /ai-commit-analyze - Analyze Changes Only
 
 > Analyze current Git changes for technical debt, security risks, and test coverage without committing
 
 ## Triggers
-- User requests analysis with "분석해줘", "analyze", "/ai-commit:analyze"
+- User requests analysis with "분석해줘", "analyze", "/ai-commit-analyze"
 - User wants to review changes before committing
 - User asks "what changed?" or "뭐가 바뀌었어?"
 
@@ -155,7 +160,7 @@ Evaluates:
 
 There are no staged or modified files.
 
-💡 Make some changes first, then run /ai-commit:analyze
+💡 Make some changes first, then run /ai-commit-analyze
 ```
 
 ### Git Not Initialized

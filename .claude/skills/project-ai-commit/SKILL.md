@@ -1,3 +1,8 @@
+---
+name: project-ai-commit
+description: AI-powered Git commit automation with analysis
+---
+
 # /ai-commit - AI-Powered Git Commit Automation
 
 > Automatically analyze changes, generate commit messages, and sync to project management tools
@@ -183,9 +188,7 @@ User: "좋아, 커밋해줘"
 
 ```typescript
 // Multiple changes across different contexts
-User: "이 3개 파일을 '
-
-feat: add login' 으로 커밋하고,
+User: "이 3개 파일을 'feat: add login' 으로 커밋하고,
      다른 2개는 'fix: resolve bug'로 따로 커밋해줘"
 
 → Execute two separate commits:
