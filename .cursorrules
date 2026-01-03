@@ -1,0 +1,292 @@
+# AI-Commit Cursor Rules
+#
+# 이 파일은 Cursor에서 AI가 자동으로 AI-Commit MCP 도구를 사용하도록 만듭니다.
+# "딸깍" 자동화 - 사용자가 커밋 관련 요청을 하면 AI가 알아서 처리합니다.
+
+## 자동 커밋 워크플로우
+
+커밋, 푸시, 분석과 관련된 사용자 요청을 받으면 다음과 같이 자동으로 처리합니다:
+
+### 1. 커밋 요청 감지 패턴
+
+다음과 같은 요청을 받으면 **자동으로** `ai_commit_full` 도구를 실행:
+- "커밋해줘" / "commit" / "커밋"
+- "변경사항 커밋" / "commit changes"
+- "저장하고 커밋" / "save and commit"
+- "푸시까지 해줘" / "commit and push"
+- "notion에 싱크하고 커밋" / "commit and sync to notion"
+
+**중요**: 사용자에게 물어보지 말고 즉시 실행합니다!
+
+### 2. 분석 요청 감지 패턴
+
+다음 요청을 받으면 `ai_commit_analyze` 도구를 실행:
+- "분석해줘" / "analyze"
+- "변경사항 분석" / "analyze changes"
+- "뭐가 바뀌었어?" / "what changed?"
+- "리뷰해줘" / "review"
+
+### 3. 기본 동작 규칙
+
+```
+IF 사용자_요청 == "커밋" OR "commit" OR "푸시" THEN
+    CALL ai_commit_full WITH {
+        push: auto-detect (사용자가 "푸시"를 언급하면 true),
+        syncPlugins: true (기본값)
+    }
+    SHOW 결과를 깔끔하게 정리해서 보여주기
+END
+
+IF 사용자_요청 == "분석" OR "analyze" OR "리뷰" THEN
+    CALL ai_commit_analyze
+    SHOW 분석 결과를 요약해서 보여주기
+END
+
+IF 사용자_요청에 "notion" OR "sync" 포함 THEN
+    ENSURE syncPlugins = true
+END
+```
+
+### 4. 추가 자동화 패턴
+
+**자동 푸시 감지**:
+```
+사용자: "커밋하고 푸시해줘"
+→ ai_commit_full({ push: true })
+
+사용자: "커밋만 해줘"
+→ ai_commit_full({ push: false })
+
+사용자: "커밋해줘" (기본)
+→ ai_commit_full({ push: false })
+```
+
+**자동 메시지 생성**:
+```
+사용자: "커밋해줘" (메시지 없음)
+→ ai_commit_full({ message: undefined }) // 자동 생성
+
+사용자: "feat: add login 으로 커밋해줘"
+→ ai_commit_full({ message: "feat: add login" })
+```
+
+### 5. 응답 형식
+
+도구 실행 후 다음 형식으로 응답:
+
+```
+✅ 커밋 완료!
+
+📝 커밋 정보:
+- SHA: abc1234...
+- 메시지: feat: add user authentication
+- 파일: 3개
+
+📊 분석 결과:
+- 기술부채: 0개
+- 보안 이슈: 0개
+- 테스트 커버리지: 양호
+
+[Notion 동기화된 경우]
+🔗 Notion에 동기화됨: https://notion.so/...
+
+[푸시한 경우]
+🚀 origin/main에 푸시 완료
+```
+
+### 6. 에러 처리
+
+도구 실행 실패 시:
+1. 에러 메시지를 명확하게 설명
+2. 해결 방법 제안
+3. 수동 명령어 안내
+
+예:
+```
+❌ 커밋 실패: 변경사항이 없습니다
+
+💡 먼저 파일을 수정해주세요. 수정 후 다시 "커밋해줘"라고 요청하시면 됩니다.
+
+수동 명령어:
+  git status  # 상태 확인
+  git add .   # 파일 추가
+```
+
+### 7. MCP 도구 사용 우선순위
+
+**항상 사용**:
+1. `ai_commit_full` - 전체 워크플로우 (가장 추천)
+2. `ai_commit_analyze` - 분석만 필요할 때
+3. `ai_commit_commit` - 커밋만 (푸시/싱크 불필요)
+4. `ai_commit_push` - 이미 커밋된 상태에서 푸시만
+
+**필요시 사용**:
+5. `ai_commit_config_get` - 설정 확인
+6. `ai_commit_sync_notion` - 특정 커밋 재동기화
+
+### 8. 프로액티브 제안
+
+다음 상황에서 자동으로 제안:
+
+**많은 파일 변경 감지**:
+```
+사용자가 여러 파일을 수정한 후 대화하면:
+"10개 파일이 변경되었네요. 커밋하시겠어요? '커밋해줘'라고 말씀해주시면 자동으로 분석하고 커밋하겠습니다."
+```
+
+**분석 결과 문제 발견**:
+```
+분석 후 기술부채/보안 이슈 발견 시:
+"⚠️  기술부채 3개, 보안 이슈 1개가 발견되었습니다.
+수정하시겠어요, 아니면 이대로 커밋하시겠어요?"
+```
+
+### 9. 설정 관리
+
+사용자가 설정 관련 질문 시:
+
+```
+사용자: "설정 어떻게 돼있어?"
+→ ai_commit_config_get()
+
+사용자: "auto push를 켜줘"
+→ ai_commit_config_set({ key: "git.autoPush", value: true })
+
+사용자: "notion database 바꿔줘"
+→ 환경 변수 안내 또는 config-set 실행
+```
+
+### 10. 컨텍스트 유지
+
+대화 중 컨텍스트 유지:
+
+```
+사용자: "분석해줘"
+AI: [분석 실행 및 결과 표시]
+
+사용자: "그럼 커밋해줘"
+AI: [방금 분석한 내용 기반으로 커밋 실행]
+   → skipAnalysis: false (재분석하여 최신 상태 보장)
+```
+
+### 11. 다국어 지원
+
+한국어와 영어 모두 자동 감지:
+
+```
+한국어: "커밋해줘", "분석해줘", "푸시해줘"
+영어: "commit", "analyze", "push"
+혼합: "커밋 and push please"
+```
+
+---
+
+## MCP 도구 사용 가이드
+
+### ai_commit_full (⭐ 가장 추천)
+```typescript
+// 완전 자동 커밋 (메시지 자동 생성)
+ai_commit_full()
+
+// 커스텀 메시지
+ai_commit_full({ message: "feat: add feature" })
+
+// 푸시까지
+ai_commit_full({ push: true })
+
+// 플러그인 싱크 비활성화
+ai_commit_full({ syncPlugins: false })
+```
+
+### ai_commit_analyze
+```typescript
+// 기본 분석
+ai_commit_analyze()
+
+// 특정 파일 제외
+ai_commit_analyze({ excludePatterns: ["*.test.ts", "dist/**"] })
+```
+
+### ai_commit_commit
+```typescript
+// 커밋만 (푸시 안함)
+ai_commit_commit({ message: "fix: bug fix" })
+
+// 분석 스킵하고 빠른 커밋
+ai_commit_commit({ message: "chore: update", skipAnalysis: true })
+```
+
+### ai_commit_push
+```typescript
+// 현재 브랜치 푸시
+ai_commit_push()
+
+// 특정 브랜치
+ai_commit_push({ branch: "feature/login" })
+
+// 다른 리모트
+ai_commit_push({ remote: "upstream" })
+```
+
+---
+
+## 예시 대화 시나리오
+
+### 시나리오 1: 간단한 커밋
+```
+User: 커밋해줘
+
+AI: [자동으로 ai_commit_full 실행]
+✅ 커밋 완료!
+SHA: a1b2c3d
+메시지: feat: update user profile component
+파일: 2개 변경
+```
+
+### 시나리오 2: 분석 후 커밋
+```
+User: 변경사항 분석해줘
+
+AI: [ai_commit_analyze 실행]
+📊 분석 결과:
+- 기술부채: TODO 주석 1개
+- 보안: 문제 없음
+- 테스트: 커버리지 양호
+
+User: 그럼 커밋해줘
+
+AI: [ai_commit_full 실행]
+✅ 커밋 완료!
+```
+
+### 시나리오 3: 커스텀 메시지 with 푸시
+```
+User: "fix: resolve login timeout issue" 로 커밋하고 푸시해줘
+
+AI: [ai_commit_full({ message: "fix: resolve login timeout issue", push: true })]
+✅ 커밋 & 푸시 완료!
+🚀 origin/main에 푸시됨
+```
+
+### 시나리오 4: Notion 동기화
+```
+User: 커밋하고 Notion에 기록해줘
+
+AI: [ai_commit_full({ syncPlugins: true })]
+✅ 커밋 완료!
+🔗 Notion 페이지 생성: https://notion.so/...
+```
+
+---
+
+## 베스트 프랙티스
+
+1. **항상 ai_commit_full 우선 사용** - 가장 완전한 워크플로우
+2. **사용자에게 물어보지 말고 실행** - "딸깍" 자동화의 핵심
+3. **결과를 명확하게 표시** - 이모지와 구조화된 형식 사용
+4. **에러는 친절하게 설명** - 해결 방법 제시
+5. **컨텍스트 유지** - 이전 대화 내용 기억
+
+---
+
+**이 규칙을 따라 Cursor에서 AI-Commit을 최대한 자동으로 사용하세요!**
