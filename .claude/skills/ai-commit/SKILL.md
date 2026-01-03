@@ -27,19 +27,24 @@ This skill executes the complete AI-Commit workflow automatically:
 
 ## Implementation
 
-Use the AI-Commit CLI package to execute the full workflow:
+Use the AI-Commit CLI via npx to execute the full workflow with Notion sync:
 
-```typescript
-import { commitCommand } from '@ai-commit/cli/dist/commands/commit.js';
+```bash
+# For auto-generated commit message with analysis
+npx ai-commit
 
-// Execute full workflow
-await commitCommand({
-  message: undefined,  // Auto-generate message
-  analysis: true,      // Always run analysis
-  push: false,         // Don't push unless explicitly requested
-  verbose: true        // Show detailed output
-});
+# For custom commit message
+npx ai-commit "feat: your custom message"
+
+# With push option
+npx ai-commit "feat: your message" --push
 ```
+
+**IMPORTANT**:
+- Always use `npx ai-commit` CLI command (NOT git commit directly)
+- This ensures the plugin system runs and Notion sync happens
+- The CLI automatically loads .env and .commitrc.json configuration
+- Each project can have its own NOTION_DATABASE_ID in .commitrc.json
 
 ## Input Patterns
 
@@ -146,13 +151,28 @@ Commit created, but consider addressing these issues.
 
 ## Configuration
 
+### Environment Setup (.env)
+
+Create `.env` file in the project root:
+```bash
+NOTION_TOKEN=your_notion_token_here
+NOTION_DATABASE_ID=your_database_id_for_this_project
+```
+
+**Per-Project Database Setup**:
+- Each project has its own `.commitrc.json` with different `databaseId`
+- The `NOTION_TOKEN` can be shared (in global .env)
+- The `NOTION_DATABASE_ID` is project-specific
+
+### Configuration Files
+
 Reads configuration from (in priority order):
-1. `.commitrc.skill.json`
-2. `.commitrc.json`
+1. `.commitrc.json` (project-specific database ID)
+2. `.env` (Notion token and default database ID)
 3. `package.json` → `commitConfig`
 4. Environment variables
 
-Example `.commitrc.skill.json`:
+Example `.commitrc.json` (per-project):
 ```json
 {
   "plugins": ["@ai-commit/plugin-notion"],
@@ -163,10 +183,10 @@ Example `.commitrc.skill.json`:
   "git": {
     "autoPush": false
   },
-  "skill": {
-    "autoStage": true,
-    "verboseOutput": true,
-    "confirmBeforeCommit": false
+  "integrations": {
+    "@ai-commit/plugin-notion": {
+      "databaseId": "PROJECT_SPECIFIC_DATABASE_ID_HERE"
+    }
   }
 }
 ```
@@ -223,41 +243,48 @@ User: "브랜치 만들고 커밋해줘"
 
 ## Examples
 
-### Example 1: Simple Commit
+### Example 1: Simple Commit (Auto-generated Message)
 ```
 User: "커밋해줘"
 
-[Execute commitCommand with defaults]
+Assistant executes:
+  npx ai-commit
 
 Output:
-✅ Commit Complete
+✅ AI-Commit Complete
 SHA: a1b2c3d
-Message: feat: update user profile component
-Files: 2 changed
+Message: feat: update user profile component with new fields
+Analysis: 0 issues found
+Notion: Synced to database
 ```
 
 ### Example 2: Custom Message + Analysis
 ```
 User: "fix: resolve login timeout 으로 커밋해줘"
 
-[Execute with custom message]
+Assistant executes:
+  npx ai-commit "fix: resolve login timeout"
 
 Output:
-✅ Commit Complete
+✅ AI-Commit Complete
 SHA: x9y8z7w
 Message: fix: resolve login timeout
 Analysis: 0 issues found
+Notion: Synced to database
 ```
 
 ### Example 3: Commit + Push
 ```
 User: "커밋하고 푸시해줘"
 
-[Execute with push: true]
+Assistant executes:
+  npx ai-commit --push
 
 Output:
-✅ Commit & Push Complete
+✅ AI-Commit Complete
 SHA: m5n6o7p
+Message: (auto-generated)
+Notion: Synced to database
 Pushed to: origin/main
 ```
 
