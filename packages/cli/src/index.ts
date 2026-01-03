@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import { config } from 'dotenv';
 import { commitCommand } from './commands/commit';
+import { initCommand } from './commands/init';
 import packageJson from '../package.json';
 
 // Load environment variables
@@ -36,9 +37,15 @@ program
 program
   .command('init')
   .description('Initialize AI-Commit in current project')
-  .action(async () => {
-    console.log('🚀 Initializing AI-Commit...');
-    console.log('Coming soon!');
+  .option('--force', 'Overwrite existing configuration')
+  .option('--skip-claude', 'Skip updating CLAUDE.md')
+  .action(async (options) => {
+    try {
+      await initCommand(options);
+    } catch (error) {
+      console.error('Error:', error instanceof Error ? error.message : error);
+      process.exit(1);
+    }
   });
 
 // Config command

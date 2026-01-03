@@ -1,0 +1,78 @@
+
+---
+
+## 🤖 AI-Commit Integration
+
+This project uses **AI-Commit** for automated commit analysis and integration syncing.
+
+### Quick Start
+
+Instead of traditional Git commands:
+
+```bash
+# ❌ Old way
+git add .
+git commit -m "message"
+git push
+```
+
+Use AI-Commit:
+
+```bash
+# ✅ New way
+ai-commit "message"
+```
+
+### What AI-Commit Does
+
+1. ✅ Stages all changes automatically
+2. 🤖 Analyzes code for technical debt, risks, and test coverage
+3. 📄 Generates detailed markdown report in `{{outputDir}}`
+4. 💾 Creates Git commit with analysis attached
+{{#if hasPlugins}}
+5. 🔄 Syncs to configured integrations
+{{/if}}
+{{#if autoPush}}
+6. 📤 Pushes to remote automatically
+{{/if}}
+
+### Configuration
+
+Current AI-Commit setup:
+
+- **Analysis**: {{#if analysisEnabled}}Enabled{{else}}Disabled{{/if}}
+- **Output**: `{{outputDir}}`
+- **Auto-push**: {{#if autoPush}}Yes{{else}}No{{/if}}
+{{#if hasPlugins}}
+- **Integrations**:
+{{#each plugins}}
+  - {{this}}
+{{/each}}
+{{/if}}
+
+### Available Commands
+
+```bash
+# Standard commit with analysis
+ai-commit "feat: add feature"
+
+# Skip analysis (faster)
+ai-commit "docs: update README" --no-analysis
+
+# Don't push to remote
+ai-commit "wip: work in progress" --no-push
+
+# Analyze only (no commit)
+ai-commit --analyze-only
+
+# Preview what would happen
+ai-commit "test" --dry-run
+```
+
+### For AI Assistants
+
+**IMPORTANT**: When committing changes in this project, always use `ai-commit` instead of `git commit` to maintain the analysis history and integration syncing.
+
+See `.ai-commit/README.md` for detailed usage instructions.
+
+---
