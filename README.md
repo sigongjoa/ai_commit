@@ -20,21 +20,42 @@ AI-Commit is a SuperClaude-style commit automation tool that brings AI-powered a
 
 ## Quick Start
 
+### Installation
+
 ```bash
 # Install globally
 npm install -g @ai-commit/cli
 
-# Use in any project
+# Initialize in your project
 cd your-project
+ai-commit init
+```
+
+### Basic Usage
+
+```bash
+# Use AI-Commit for commits
 ai-commit "feat: add new feature"
 ```
 
+This will automatically:
+1. ✅ Stage all changes
+2. 🤖 Analyze code (technical debt, risks, test coverage)
+3. 📄 Generate markdown report
+4. 💾 Create commit
+5. 🔄 Sync to integrations (if configured)
+6. 📤 Push to remote (if enabled)
+
 ### With LLM Tools (Cursor, Claude Code, etc.)
+
+After running `ai-commit init`, your LLM coding assistant will automatically know how to use AI-Commit:
 
 ```bash
 # In your LLM coding assistant
 /ai-commit "your commit message"
 ```
+
+The assistant will execute the AI-Commit workflow and show you analysis results.
 
 ## Installation
 
@@ -239,24 +260,57 @@ export default class MyPlugin implements AiCommitPlugin {
 - [User Guide](docs/USER_GUIDE.md) (Coming soon)
 - [Plugin Development Guide](docs/PLUGIN_DEVELOPMENT_GUIDE.md) (Coming soon)
 
+## Current Status
+
+### ✅ Implemented Features
+
+**Phase 1: Foundation**
+- ✅ Monorepo setup with Lerna
+- ✅ CLI package scaffold
+- ✅ Git operations module
+- ✅ Shared types package
+
+**Phase 2: Core Features**
+- ✅ Analysis engine (technical debt, risks, test coverage)
+- ✅ Report generator with Handlebars templates
+- ✅ Config loader (multi-source with priority)
+- ✅ Plugin manager with lifecycle hooks
+
+**Phase 3: Plugin System**
+- ✅ Notion plugin with markdown conversion
+- ✅ Plugin architecture and hooks
+- ✅ Sync to external integrations
+
+**Phase 4: LLM Integration**
+- ✅ LLM instruction templates
+- ✅ Init command implementation
+- ✅ CLAUDE.md auto-update
+- ✅ Cursor/Claude Code/Antigravity support
+
 ## Roadmap
 
-### v1.0.0 (MVP)
+### v1.0.0 (Current - MVP Ready!)
 
+**Completed**:
 - ✅ Core CLI with AI analysis
 - ✅ Plugin system architecture
 - ✅ Notion plugin
 - ✅ Configuration system
 - ✅ LLM instruction generation
 
-### v1.1.0
+**Remaining**:
+- ⏳ Build system finalization
+- ⏳ npm publish preparation
+- ⏳ Documentation polish
+
+### v1.1.0 (Future)
 
 - Linear plugin
 - Jira plugin
 - Asana plugin
 - VS Code Extension
 
-### v2.0.0
+### v2.0.0 (Future)
 
 - LLM API integration (OpenAI/Claude)
 - Custom analysis rules with natural language
