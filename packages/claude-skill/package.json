@@ -1,0 +1,29 @@
+{
+  "name": "@ai-commit/claude-skill",
+  "version": "1.0.0",
+  "description": "Claude Code skills for AI-Commit - intelligent Git commit automation",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "install": "node install.js"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "skill",
+    "ai-commit",
+    "git",
+    "commit",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@ai-commit/cli": "workspace:*"
+  },
+  "files": [
+    "skills",
+    "README.md",
+    "install.js"
+  ]
+}
