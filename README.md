@@ -1,61 +1,115 @@
 # AI-Commit
 
-> **AI-powered Git commit automation tool with LLM integration and plugin architecture**
+> **AI-powered Git commit automation for everyone, everywhere**
+>
+> Use in your terminal, Cursor, Windsurf, Cline, Claude Code, and any AI coding tool!
 
 [![npm version](https://img.shields.io/npm/v/@ai-commit/cli.svg)](https://www.npmjs.com/package/@ai-commit/cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+## 🎯 One Tool, Three Interfaces
 
-AI-Commit is a SuperClaude-style commit automation tool that brings AI-powered analysis and multi-platform integration to your Git workflow. It works seamlessly with Cursor, Antigravity, Claude Code, and terminal environments.
+AI-Commit provides **three ways to use the same powerful features**:
 
-### Key Features
+```
+1️⃣  Terminal (CLI)      → ai-commit
+2️⃣  AI Coding Tools (MCP) → Cursor, Windsurf, Cline, etc.
+3️⃣  Claude Code (Skill)  → /ai-commit
+```
 
-- 🤖 **AI-Powered Analysis**: Technical debt detection, risk assessment, test coverage analysis
+**All share the same core**: analyze changes, generate commits, sync to Notion/Linear, and more!
+
+---
+
+## ✨ Key Features
+
+- 🤖 **AI-Powered Analysis**: Technical debt detection, security risks, test coverage
 - 🔌 **Plugin Architecture**: Extensible integration with Notion, Linear, Jira, Asana
-- 🌐 **LLM-Friendly**: Natural integration with AI coding assistants
-- 📦 **npm Package**: Global installation with `npm install -g @ai-commit/cli`
-- ⚡ **Zero-Config**: Sensible defaults, works out of the box
-- 🎯 **Language-Agnostic**: Analyzes Git diffs, not source code
+- 🎨 **3 Interfaces**: CLI + MCP + Claude Skill for maximum compatibility
+- 📊 **Rich Reports**: Detailed markdown analysis reports
+- ⚡ **Auto-Commit**: "딱깍" one-click automation in Cursor and other tools
+- 🌐 **Universal**: Works with **any** Git repository, **any** language
 
-## Quick Start
+## 🚀 Quick Start
 
-### Installation
+Choose your interface:
+
+### Option 1: Terminal (CLI) 💻
 
 ```bash
 # Install globally
 npm install -g @ai-commit/cli
 
-# Initialize in your project
+# Use in any Git repository
 cd your-project
-ai-commit init
-```
-
-### Basic Usage
-
-```bash
-# Use AI-Commit for commits
 ai-commit "feat: add new feature"
 ```
 
-This will automatically:
-1. ✅ Stage all changes
-2. 🤖 Analyze code (technical debt, risks, test coverage)
-3. 📄 Generate markdown report
-4. 💾 Create commit
-5. 🔄 Sync to integrations (if configured)
-6. 📤 Push to remote (if enabled)
+### Option 2: Cursor/Windsurf/Cline (MCP) 🤖
 
-### With LLM Tools (Cursor, Claude Code, etc.)
-
-After running `ai-commit init`, your LLM coding assistant will automatically know how to use AI-Commit:
-
-```bash
-# In your LLM coding assistant
-/ai-commit "your commit message"
+```jsonc
+// Add to your tool's MCP config
+{
+  "mcpServers": {
+    "ai-commit": {
+      "command": "npx",
+      "args": ["-y", "@ai-commit/mcp-server"]
+    }
+  }
+}
 ```
 
-The assistant will execute the AI-Commit workflow and show you analysis results.
+Then in Cursor Composer:
+```
+You: "커밋해줘"
+AI: [Automatically analyzes and commits with AI-Commit]
+```
+
+**[→ Detailed Cursor Setup Guide](CURSOR_SETUP_GUIDE.md)**
+
+### Option 3: Claude Code (Skill) ⚡
+
+```bash
+# Install skills
+cp -r packages/claude-skill/skills/* ~/.claude/skills/ai-commit/
+```
+
+Then in Claude Code:
+```
+/ai-commit                # Auto-commit
+/ai-commit:analyze        # Analyze only
+/ai-commit:config         # Show config
+```
+
+**[→ Skill Documentation](packages/claude-skill/README.md)**
+
+---
+
+## 🎨 What Happens When You Commit?
+
+All three interfaces provide the same workflow:
+
+1. ✅ **Stage Changes** - Automatically stages all modified files
+2. 🤖 **Analyze Code** - Detects technical debt, security risks, test coverage
+3. 📝 **Generate Message** - Creates semantic commit message (or use yours)
+4. 💾 **Create Commit** - Makes Git commit with analysis
+5. 🔄 **Sync Integrations** - Sends to Notion/Linear/Jira (if configured)
+6. 📤 **Push** (optional) - Pushes to remote repository
+
+**Output Example**:
+```
+✅ Commit Complete!
+
+📊 Analysis:
+   • Technical Debt: 2 items (TODO comments)
+   • Security: 0 issues
+   • Test Coverage: Good
+
+📝 Commit: abc1234
+   Message: feat: add user authentication
+
+🔗 Notion: Synced to database
+```
 
 ## Installation
 
@@ -161,18 +215,38 @@ ai-commit "test" --dry-run
 ai-commit --analyze-only
 ```
 
-## Packages
+## 📦 Packages
 
 This monorepo contains the following packages:
 
-| Package | Description | Version |
-|---------|-------------|---------|
-| [@ai-commit/cli](packages/cli) | Main CLI tool | - |
-| [@ai-commit/shared](packages/shared) | Shared types and utilities | - |
-| [@ai-commit/plugin-notion](packages/plugin-notion) | Notion integration | - |
-| [@ai-commit/plugin-linear](packages/plugin-linear) | Linear integration | - |
-| [@ai-commit/plugin-jira](packages/plugin-jira) | Jira integration | - |
-| [@ai-commit/plugin-asana](packages/plugin-asana) | Asana integration | - |
+### Core Packages
+
+| Package | Description | Status |
+|---------|-------------|--------|
+| [@ai-commit/cli](packages/cli) | Terminal CLI tool | ✅ Complete |
+| [@ai-commit/mcp-server](packages/mcp-server) | MCP server for AI tools | ✅ Complete |
+| [@ai-commit/claude-skill](packages/claude-skill) | Claude Code skills | ✅ Complete |
+| [@ai-commit/shared](packages/shared) | Shared types and utilities | ✅ Complete |
+
+### Plugins
+
+| Package | Description | Status |
+|---------|-------------|--------|
+| [@ai-commit/plugin-notion](packages/plugin-notion) | Notion integration | ✅ Complete |
+| [@ai-commit/plugin-linear](packages/plugin-linear) | Linear integration | ⏳ Planned (v1.1) |
+| [@ai-commit/plugin-jira](packages/plugin-jira) | Jira integration | ⏳ Planned (v1.1) |
+| [@ai-commit/plugin-asana](packages/plugin-asana) | Asana integration | ⏳ Planned (v1.1) |
+
+### Documentation
+
+| Document | Description |
+|----------|-------------|
+| [CURSOR_SETUP_GUIDE.md](CURSOR_SETUP_GUIDE.md) | Cursor "딱깍" automation setup |
+| [EXPANSION_PLAN.md](EXPANSION_PLAN.md) | 3-layer architecture plan |
+| [MANUAL_TESTING_GUIDE.md](MANUAL_TESTING_GUIDE.md) | Manual testing instructions |
+| [TECHNICAL_SPECIFICATION.md](TECHNICAL_SPECIFICATION.md) | Technical spec |
+| [ARCHITECTURE_DESIGN.md](ARCHITECTURE_DESIGN.md) | Architecture design |
+| [IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md) | Implementation roadmap |
 
 ## Development
 
@@ -260,62 +334,85 @@ export default class MyPlugin implements AiCommitPlugin {
 - [User Guide](docs/USER_GUIDE.md) (Coming soon)
 - [Plugin Development Guide](docs/PLUGIN_DEVELOPMENT_GUIDE.md) (Coming soon)
 
-## Current Status
+## 📊 Current Status
 
-### ✅ Implemented Features
+### ✅ Phase 1-4: Complete!
 
-**Phase 1: Foundation**
-- ✅ Monorepo setup with Lerna
-- ✅ CLI package scaffold
-- ✅ Git operations module
-- ✅ Shared types package
+**Phase 1: Foundation** ✅
+- ✅ Monorepo setup with Lerna + npm workspaces
+- ✅ CLI package with Commander.js
+- ✅ Git operations (GitClient class)
+- ✅ Shared types package (TypeScript)
 
-**Phase 2: Core Features**
-- ✅ Analysis engine (technical debt, risks, test coverage)
-- ✅ Report generator with Handlebars templates
-- ✅ Config loader (multi-source with priority)
-- ✅ Plugin manager with lifecycle hooks
+**Phase 2: Core Features** ✅
+- ✅ Analysis engine (pattern-based detection)
+- ✅ Report generator (Handlebars templates)
+- ✅ Config loader (multi-source priority: package.json > .commitrc.json > env vars)
+- ✅ Plugin manager (lifecycle hooks)
+- ✅ Full commit workflow integration
 
-**Phase 3: Plugin System**
-- ✅ Notion plugin with markdown conversion
-- ✅ Plugin architecture and hooks
+**Phase 3: Plugin System** ✅
+- ✅ Notion plugin (markdown→blocks conversion, API integration)
+- ✅ Plugin architecture (beforeAnalysis, afterCommit, etc.)
 - ✅ Sync to external integrations
 
-**Phase 4: LLM Integration**
+**Phase 4: LLM Integration** ✅
 - ✅ LLM instruction templates
-- ✅ Init command implementation
+- ✅ Init command (generates config files)
 - ✅ CLAUDE.md auto-update
-- ✅ Cursor/Claude Code/Antigravity support
 
-## Roadmap
+**Phase 5: MCP Server** ✅ (NEW!)
+- ✅ 7 MCP tools (analyze, commit, push, full, sync-notion, config-get/set)
+- ✅ 2 resources (commit history, analysis reports)
+- ✅ 2 prompts (review-changes, suggest-message)
+- ✅ Works with Cursor, Windsurf, Cline, Claude Desktop
+- ✅ **Cursor Rules for "딱깍" auto-commit**
 
-### v1.0.0 (Current - MVP Ready!)
+**Phase 6: Claude Skill** ✅ (NEW!)
+- ✅ 4 skills (/ai-commit, :analyze, :config, :init)
+- ✅ Auto-execute (no confirmation needed)
+- ✅ Rich formatted output
+- ✅ Multi-language triggers (Korean/English)
+
+**Phase 7: Config Command** ✅
+- ✅ Show configuration from all sources
+- ✅ Validate settings
+- ✅ JSON output mode
+- ✅ Sensitive data redaction
+
+---
+
+## 🗺️ Roadmap
+
+### v1.0.0 (✅ Complete - Ready to Build!)
 
 **Completed**:
-- ✅ Core CLI with AI analysis
-- ✅ Plugin system architecture
+- ✅ CLI tool (full features)
+- ✅ MCP server (Cursor, Windsurf, Cline support)
+- ✅ Claude Code skills
 - ✅ Notion plugin
 - ✅ Configuration system
-- ✅ LLM instruction generation
+- ✅ "딱깍" auto-commit in Cursor
 
-**Remaining**:
-- ⏳ Build system finalization
-- ⏳ npm publish preparation
-- ⏳ Documentation polish
+**Remaining for Release**:
+- ⏳ TypeScript build (needs non-WSL environment)
+- ⏳ npm publish
+- ⏳ Live documentation site
 
 ### v1.1.0 (Future)
 
-- Linear plugin
-- Jira plugin
-- Asana plugin
+- Additional plugins (Linear, Jira, Asana)
 - VS Code Extension
+- Windsurf/Cline setup guides
+- Plugin marketplace
 
 ### v2.0.0 (Future)
 
-- LLM API integration (OpenAI/Claude)
-- Custom analysis rules with natural language
+- Native LLM integration (OpenAI/Claude API)
+- Natural language custom rules
 - Team analytics dashboard
-- Webhook integrations
+- Webhook system
+- Multi-repo support
 
 ## Contributing
 
